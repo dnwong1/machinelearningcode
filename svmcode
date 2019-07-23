@@ -1,0 +1,64 @@
+#import libraries
+import os
+from tqdm import tqdm
+import json
+import gc
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import *
+from sklearn.svm import *
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import *
+from sklearn import metrics
+from sklearn import svm 
+#import data
+df = pd.read_csv(r'C:\Users\David\eclipse-workspace\dddd\masterdata1.csv')
+df.shape #(rows,columns)
+df.head()
+
+#create trainging/testing model
+X = df.drop("censor_po", axis=1)
+y = df["censor_po"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3,random_state=109)
+clf=svm.SVC(kernel='linear')
+clf.fit(X_train, y_train)
+y_pred=clf.predict(X_test)
+print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
+
+# train, test = train_test_split(df, test_size=0.3, random_state=2019)
+# #All of this is standard for a supporting vector machine
+# # #----------------------------------------------------------------------------------------------
+# mod = SVC(kernel='linear')
+# mod.fit(X_train, y_train)
+# y_pred = svclassifier.predict(X_test)
+# print(confusion_matrix(y_test,y_pred))
+# print(classification_report(y_test,y_pred))\
+# target_var = 'censor_po'
+# lr = LogisticRegression(random_state=2019, max_iter=200)
+# 
+# lr.fit(train.drop([target_var], axis=1), train[target_var])
+# 
+# lr_tra_preds = lr.predict_proba(train.drop([target_var], axis=1))[:, 1].squeeze()
+# lr_tst_preds = lr.predict_proba(test.drop([target_var], axis=1))[:, 1].squeeze()
+# 
+# 
+# def validate(truth, preds, threshold=0.5):
+#     bin_preds = [1 if ele >= threshold else 0 for ele in preds]
+#     _accurary_score = accuracy_score(truth, bin_preds)
+#     _precision_score = precision_score(truth, bin_preds)
+#     _recall_score = recall_score(truth, bin_preds)
+#     _auc_score = roc_auc_score(truth, preds)
+#     
+#     print("Accuracy: {}".format(_accurary_score))
+#     print("Precision: {}".format(_precision_score))
+#     print("Recall: {}".format(_recall_score))
+#     print("AUC: {}".format(_auc_score))
+#     
+#     
+# 
+# print("For training: ")
+# validate(train[target_var], lr_tra_preds)
+# 
+# print("For testing: ")
+# validate(test[target_var], lr_tst_preds)
+
