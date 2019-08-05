@@ -22,8 +22,26 @@ y = df["censor_po"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3,random_state=109)
 clf=svm.SVC(kernel='linear')
 clf.fit(X_train, y_train)
-y_pred=clf.predict(X_test)
-print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
+y_predtest=clf.predict(X_test)
+y_predtrain=clf.predict(X_train)
+
+#training set
+print("TRAINING SET")
+print("Accuracy:", metrics.accuracy_score(y_train, y_predtrain))
+print("Precision:", metrics.precision_score(y_train, y_predtrain))
+print("Recall:", metrics.recall_score(y_train, y_predtrain))
+print("AUC:", metrics.roc_auc_score(y_train, y_predtrain))
+
+
+
+#test set
+print("TEST SET")
+print("Accuracy:", metrics.accuracy_score(y_test, y_predtest))
+print("Precision:", metrics.precision_score(y_test, y_predtest))
+print("Recall:", metrics.recall_score(y_test, y_predtest))
+print("AUC:", metrics.roc_auc_score(y_test, y_predtest))
+
+ 
 
 # train, test = train_test_split(df, test_size=0.3, random_state=2019)
 # #All of this is standard for a supporting vector machine
@@ -32,8 +50,8 @@ print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
 # mod.fit(X_train, y_train)
 # y_pred = svclassifier.predict(X_test)
 # print(confusion_matrix(y_test,y_pred))
-# print(classification_report(y_test,y_pred))\
-# target_var = 'censor_po'
+# print(classification_report(y_test,y_pred))
+# # target_var = 'censor_po'
 # lr = LogisticRegression(random_state=2019, max_iter=200)
 # 
 # lr.fit(train.drop([target_var], axis=1), train[target_var])
