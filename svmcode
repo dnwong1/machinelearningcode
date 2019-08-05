@@ -79,4 +79,3 @@ print("AUC:", metrics.roc_auc_score(y_test, y_predtest))
 # 
 # print("For testing: ")
 # validate(test[target_var], lr_tst_preds)
-
