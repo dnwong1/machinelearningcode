@@ -1,0 +1,61 @@
+#import libraries
+import os
+import matplotlib.pyplot as plt
+from tqdm import tqdm
+import json
+import gc
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import *
+from sklearn.svm import *
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import *
+from sklearn import metrics
+from sklearn import ensemble
+#import data
+df = pd.read_csv(r'C:\Users\David\eclipse-workspace\dddd\masterdata1.csv')
+df.shape #(rows,columns)
+df.head()
+
+#create trainging/testing model
+X = df.drop("censor_po", axis=1)
+y = df["censor_po"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3,random_state=109)
+clf= ensemble.GradientBoostingRegressor()
+clf.fit(X_train, y_train)
+
+ 
+#training set
+print("TRAINING SET")
+print("Accuracy:",  metrics.accuracy_score(y_train, clf.predict(X_train).round()))
+print("Precision:",   metrics.precision_score(y_train, clf.predict(X_train).round()))
+print("Recall:", metrics.recall_score(y_train, clf.predict(X_train).round()))
+print("AUC:", metrics.roc_auc_score(y_train, clf.predict(X_train).round()))
+ 
+# 
+# for feat, importance in zip(df.columns, clf.feature_importances_):
+#     print ('feature: {f}, importance: {i}'.format(f=feat, i=importance*100))
+#     
+#     
+# feature_importance = clf.feature_importances_
+# # make importances relative to max importance
+# feature_importance = 100.0 * (feature_importance / feature_importance.max())
+# sorted_idx = np.argsort(feature_importance)
+# pos = np.arange(sorted_idx.shape[0]) + .5
+# plt.subplot(1, 2, 2)
+# plt.barh(pos, feature_importance[sorted_idx], align='center')
+# plt.yticks(pos, df.columns)
+# plt.xlabel('Relative Importance')
+# plt.title('Variable Importance')
+# plt.show()
+# 
+# 
+# 
+# #test set
+print()
+print("TEST SET")
+print("Accuracy:",  metrics.accuracy_score(y_test, clf.predict(X_test).round()))
+print("Precision:",   metrics.precision_score(y_test, clf.predict(X_test).round()))
+print("Recall:", metrics.recall_score(y_test, clf.predict(X_test).round()))
+print("AUC:", metrics.roc_auc_score(y_test, clf.predict(X_test).round()))
+
